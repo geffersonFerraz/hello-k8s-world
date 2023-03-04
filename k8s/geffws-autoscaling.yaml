@@ -1,0 +1,15 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-geffws
+  namespace: geffws
+  labels:
+    app: geffws
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: geffws-deployment
+  minReplicas: 1
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 50
