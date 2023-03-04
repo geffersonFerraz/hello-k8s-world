@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: geffws
+  name: geffws-deployment
+  namespace: geffws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geffws
+  template:
+    metadata:
+      labels:
+        app: geffws
+    spec:
+      containers:
+      - name: geffws
+        command:
+        - ./geffws
+        image: docker.io/geffws/hello-k8s-world:v0.4.6
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 60Mi
+            cpu: 500m
+        ports:
+        - containerPort: 8083
+          name: https
+          protocol: TCP
+        env:
+        - name: GO_ENV
+          value: prd
+        - name: GIN_MODE
+          value: release
+        - name: PORT
+          value: '8083'

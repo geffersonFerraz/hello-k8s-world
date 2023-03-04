@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: geffws-ingress
+  namespace: geffws
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  rules:
+  - host: api.geff.ws
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: geffws-service
+            port:
+              number: 443
+  tls:
+  - hosts:
+    - api.geff.ws
+    secretName: api-geff-ws-domain-cert-prod
