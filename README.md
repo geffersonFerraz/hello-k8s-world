@@ -345,3 +345,24 @@ No meu caso, ficou: `https://api.geff.ws/v1/ping`
 
 Se estiver recebendo erro 502, exclua o service da sua aplicação e execute a criação dele novamente.
 Se ainda sim persistir o erro, de um google e qualquer coisa, manda um email [me.ajuda@gefferson.com.br](mailto:me.ajuda@gefferson.com.br) que te passo algumas dicas e podemos nos ajudar.
+
+## Deployando imagem de repositório privado
+
+Primeiro crie o secret de autenticação do repositório (exemplo utilizando repositório Docker Hub):
+
+```console
+kubectl create secret docker-registry regcred --docker-server='https://index.docker.io/v1/' --docker-username=SEU_USUARIO --docker-password='SUA_SENHA_SUPER_FORTE' --docker-email='O_EMAIL_DA_SUA@CONTA.COM'
+```
+
+E para o pod conseguir fazer o pull da imagem, adicione isso no seu "deployment":
+
+```yaml
+spec:
+...
+  template:
+  ...
+    spec:
+      imagePullSecrets:
+      - name: regcred
+  ...      
+```
